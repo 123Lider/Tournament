@@ -16,7 +16,6 @@
         /* --- GLOBAL STYLES --- */
         :root { --primary: #FF005C; --bg: #090910; --card: #14141F; --text: #fff; --green: #00F5D4; --cyan: #00D2D3; --yellow: #F1C40F; --red: #ff4757; }
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; text-align: center; overflow-x: hidden; user-select: none; -webkit-tap-highlight-color: transparent; }
-        
         .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding-bottom: 90px;}
         .screen { display: none; padding: 20px; animation: fadeIn 0.4s ease; }
         .active { display: block; }
@@ -30,31 +29,16 @@
         .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color:white; }
         input { width: 100%; padding: 15px; background: #0F0F16; border: 1px solid #333; color: white; border-radius: 10px; margin-bottom: 10px; box-sizing: border-box; }
 
-        /* MODAL */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); animation: fadeIn 0.3s; }
-        .modal-box { background: #191925; width: 85%; max-width: 320px; padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5); transform: scale(0.9); animation: popUp 0.3s forwards; }
-        @keyframes popUp { to { transform: scale(1); } }
-        .modal-btn { padding: 10px 25px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; font-size: 0.9rem; flex: 1; }
-        .m-btn-yes { background: linear-gradient(45deg, #00b894, #00cec9); color: #000; }
-        .m-btn-no { background: transparent; border: 1px solid #ff4757; color: #ff4757; }
-
         /* HEADER */
         header { background: rgba(20, 20, 31, 0.9); backdrop-filter: blur(10px); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .balance-pill { background: linear-gradient(90deg, #11998e, #38ef7d); color: #fff; padding: 6px 15px; border-radius: 50px; font-weight: bold; cursor: pointer; }
         
-        /* LOBBY */
-        .lobby-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .slot-card { background: #191925; border: 1px solid rgba(255,255,255,0.05); border-radius: 15px; padding: 20px 10px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.2s; cursor: pointer; }
-        .slot-icon { font-size: 1.8rem; margin-bottom: 8px; color: var(--cyan); }
-        .slot-status { font-size: 0.7rem; padding: 3px 8px; border-radius: 4px; margin-top: 5px; }
-        .st-wait { color: var(--yellow); background: rgba(241, 196, 15, 0.1); }
-        
-        /* RADAR */
+        /* RADAR SCANNER */
         .radar { width: 150px; height: 150px; background: rgba(0, 245, 212, 0.1); border: 2px solid var(--cyan); border-radius: 50%; position: relative; margin: 0 auto; overflow: hidden; box-shadow: 0 0 20px rgba(0, 245, 212, 0.3); }
         .scan { width: 100%; height: 100%; background: linear-gradient(180deg, rgba(0, 245, 212, 0.6), transparent); position: absolute; animation: radar-spin 2s linear infinite; transform-origin: bottom center; border-radius: 50%; clip-path: polygon(50% 50%, 0 0, 100% 0); opacity: 0.5; }
         @keyframes radar-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* LUDO BOARD */
+        /* GAME BOARD */
         #ludo-game { position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; background-color: #2c3e50; z-index: 9999; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; visibility: hidden; opacity: 0; transition: 0.3s; }
         #ludo-game.active { visibility: visible; opacity: 1; }
         #game-area { width: 750px; height: 750px; background: white; box-shadow: 0 0 30px rgba(0,0,0,0.6); border: 5px solid #000; transform-origin: center; }
@@ -72,22 +56,13 @@
         .safe-star { color: rgba(0,0,0,0.25); font-size: 36px; position: absolute; z-index: 1; pointer-events: none; }
         .ludo_home { height: 0; width: 0; border-left: 75px solid red; border-right: 75px solid #f1c40f; border-top: 75px solid #009432; border-bottom: 75px solid #0652DD; position: relative; display: flex; justify-content: center; align-items: center; }
         
-        .token { 
-            width: 32px; height: 42px; position: absolute; z-index: 10; 
-            border-radius: 50% 50% 50% 50% / 60% 60% 35% 35%; 
-            box-shadow: 2px 3px 5px rgba(0,0,0,0.6); 
-            border: 2px solid rgba(255,255,255,0.8); 
-            cursor: pointer; transition: all 0.2s ease; 
-            top: 50%; left: 50%; transform: translate(-50%, -60%);
-        }
+        .token { width: 32px; height: 42px; position: absolute; z-index: 10; border-radius: 50% 50% 50% 50% / 60% 60% 35% 35%; box-shadow: 2px 3px 5px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.8); cursor: pointer; transition: all 0.2s ease; top: 50%; left: 50%; transform: translate(-50%, -60%); }
         .token-green { background: radial-gradient(circle at 10px 10px, #4cd137, #006266); }
         .token-blue { background: radial-gradient(circle at 10px 10px, #00a8ff, #192a56); }
         .token.movable { animation: bounce 0.8s infinite alternate; box-shadow: 0 0 15px yellow; z-index: 100; border-color: yellow; }
         .token.grouped { width: 22px; height: 30px; z-index: 15; border-width: 1px; }
-        .stack-0 { transform: translate(-100%, -100%); }
-        .stack-1 { transform: translate(0%, -100%); }
-        .stack-2 { transform: translate(-100%, -20%); }
-        .stack-3 { transform: translate(0%, -20%); }
+        .stack-0 { transform: translate(-100%, -100%); } .stack-1 { transform: translate(0%, -100%); }
+        .stack-2 { transform: translate(-100%, -20%); } .stack-3 { transform: translate(0%, -20%); }
         .stack-center { transform: translate(-50%, -60%) scale(0.8); }
 
         .dice-panel { position: absolute; z-index: 200; background: rgba(255, 255, 255, 0.9); padding: 10px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 3px solid #333; cursor: pointer; display: flex; flex-direction: column; align-items: center; width: 60px; left: 50%; transform: translateX(-50%); transition: 0.3s; opacity: 0.5; pointer-events: none;}
@@ -103,209 +78,87 @@
         .top { transform: rotateX(90deg) translateZ(25px); } .bottom { transform: rotateX(-90deg) translateZ(25px); }
         .center { grid-area: 2 / 2; } .top-left { grid-area: 1 / 1; } .top-right { grid-area: 1 / 3; } .mid-left { grid-area: 2 / 1; } .mid-right { grid-area: 2 / 3; } .bottom-left { grid-area: 3 / 1; } .bottom-right { grid-area: 3 / 3; }
 
-        .game-header { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; z-index: 300; pointer-events: none; width: 95%; margin: 0 auto; }
-        .game-badge { background: rgba(0,0,0,0.8); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; pointer-events: all; }
-
-        /* SIDEBAR WALLET */
-        .wallet-fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: linear-gradient(135deg, var(--green), #009432); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 0 20px rgba(0, 245, 212, 0.4); z-index: 100; cursor: pointer; border: 2px solid #fff; transition: transform 0.2s; }
+        /* WALLET & SETTINGS */
+        .wallet-fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: linear-gradient(135deg, var(--green), #009432); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 0 20px rgba(0, 245, 212, 0.4); z-index: 100; cursor: pointer; border: 2px solid #fff; }
         .sidebar { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100vh; background: #101018; z-index: 200; transition: 0.4s; padding: 0; box-sizing: border-box; overflow-y: auto; }
         .sidebar.open { right: 0; }
         .wallet-top { background: linear-gradient(180deg, #1F1F2E, #101018); padding: 30px 20px 20px; text-align: center; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 10; }
         .close-btn { position: absolute; top: 20px; left: 20px; font-size: 1.5rem; color: #aaa; cursor: pointer; }
         .tab-btn { background: #333; border: none; padding: 8px 20px; color: #aaa; border-radius: 50px; cursor: pointer; }
         .tab-active { background: var(--green); color: black; font-weight: bold; }
-        
         .menu-btn { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-left: 10px; border: 1px solid rgba(255,255,255,0.1); }
-        .settings-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); animation: fadeIn 0.3s; }
-        .settings-card { background: #14141F; width: 85%; max-width: 350px; padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; position: relative; }
-        .menu-list-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); }
+        
+        /* MODALS */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); animation: fadeIn 0.3s; }
+        .modal-box { background: #191925; width: 85%; max-width: 320px; padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5); transform: scale(0.9); animation: popUp 0.3s forwards; }
+        @keyframes popUp { to { transform: scale(1); } }
+        .modal-btn { padding: 10px 25px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; font-size: 0.9rem; flex: 1; }
+        .m-btn-yes { background: linear-gradient(45deg, #00b894, #00cec9); color: #000; }
+        .m-btn-no { background: transparent; border: 1px solid #ff4757; color: #ff4757; }
+        
+        /* QUIZ LOBBY GRID */
+        .lobby-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .slot-card { background: #191925; border: 1px solid rgba(255,255,255,0.05); border-radius: 15px; padding: 20px 10px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.2s; cursor: pointer; }
+        .slot-icon { font-size: 1.8rem; margin-bottom: 8px; color: var(--cyan); }
+        .slot-status { font-size: 0.7rem; padding: 3px 8px; border-radius: 4px; margin-top: 5px; }
+        .st-wait { color: var(--yellow); background: rgba(241, 196, 15, 0.1); }
     </style>
 </head>
 <body>
 
 <div class="container">
-
-    <!-- 1. AUTH SCREEN -->
     <div id="auth-screen" class="screen active">
         <div class="card" style="margin-top: 15vh; padding: 30px;">
             <h1 style="color:var(--primary);">GAMING<span style="color:#fff">APP</span></h1>
-            <div id="login-form">
-                <input type="email" id="email" placeholder="Email Address">
-                <input type="password" id="pass" placeholder="Password">
-                <button onclick="login()">LOGIN</button>
-            </div>
-            <div id="signup-form" style="display:none;">
-                <p style="color:#f1c40f; font-size:0.75rem; margin-bottom:10px;">* Location auto-detected *</p>
-                <input type="text" id="su-name" placeholder="Full Name">
-                <div style="text-align:right; margin-bottom:5px;">
-                    <span onclick="detectLocation()" style="font-size:0.8rem; color:var(--cyan); cursor:pointer; border:1px solid var(--cyan); padding:2px 8px; border-radius:4px;"><i class="fas fa-map-marker-alt"></i> Auto Detect</span>
-                </div>
-                <input type="text" id="su-country" placeholder="Country" readonly style="background:#1a1a2e; color:#aaa;">
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="su-city" placeholder="City">
-                    <input type="text" id="su-dist" placeholder="District">
-                </div>
-                <select id="su-pouro" style="width:100%; padding:15px; background:#0F0F16; color:white; border:1px solid #333; border-radius:10px; margin-bottom:10px; outline:none;">
-                    <option value="" style="color:#aaa;">Select Area Type</option>
-                    <option value="Paurashava">Paurashava</option>
-                    <option value="Non-Paurashava">Non-Paurashava</option>
-                </select>
-                <input type="text" id="su-ward" placeholder="Ward No / Area">
-                <input type="text" id="su-house" placeholder="House Name">
-                <input type="email" id="su-email" placeholder="Gmail Address">
-                <input type="password" id="su-pass" placeholder="Password (Min 6 chars)">
-                <input type="password" id="su-conf-pass" placeholder="Confirm Password">
-                <input type="text" id="promo-code" placeholder="Promo Code (Optional)">
-                <button onclick="signup()" class="btn-green">CREATE ACCOUNT</button>
-            </div>
+            <div id="login-form"><input type="email" id="email" placeholder="Email"><input type="password" id="pass" placeholder="Password"><button onclick="login()">LOGIN</button></div>
+            <div id="signup-form" style="display:none;"><p style="color:#f1c40f; font-size:0.75rem;">* Location auto-detected *</p><input type="text" id="su-name" placeholder="Full Name"><input type="text" id="su-country" placeholder="Country" readonly style="background:#1a1a2e; color:#aaa;"><div style="display:flex; gap:10px;"><input type="text" id="su-city" placeholder="City"><input type="text" id="su-dist" placeholder="District"></div><select id="su-pouro" style="width:100%; padding:15px; background:#0F0F16; color:white; border:1px solid #333; border-radius:10px; margin-bottom:10px;"><option value="">Select Area Type</option><option value="Paurashava">Paurashava</option><option value="Non-Paurashava">Non-Paurashava</option></select><input type="text" id="su-ward" placeholder="Ward No"><input type="text" id="su-house" placeholder="House Name"><input type="email" id="su-email" placeholder="Gmail"><input type="password" id="su-pass" placeholder="Password (Min 6)"><input type="password" id="su-conf-pass" placeholder="Confirm Password"><button onclick="signup()" class="btn-green">CREATE ACCOUNT</button></div>
             <p id="auth-toggle-msg" onclick="toggleAuthMode()" style="font-size:0.8rem; color:#aaa; cursor:pointer; margin-top:15px;">Don't have an account? <b style="color:var(--cyan)">Sign Up</b></p>
         </div>
     </div>
 
-    <!-- 2. HOME SCREEN -->
     <div id="home-screen" class="screen">
         <header>
             <div style="text-align: left;"><small>Welcome,</small><br><b id="u-name">Player</b></div>
-            <div style="display:flex; align-items:center;">
-                <div class="balance-pill" onclick="toggleSidebar()"><i class="fas fa-wallet"></i> ৳ <span id="u-bal">0</span></div>
-                <div class="menu-btn" onclick="openSettings()"><i class="fas fa-ellipsis-v"></i></div>
-            </div>
+            <div style="display:flex; align-items:center;"><div class="balance-pill" onclick="toggleSidebar()"><i class="fas fa-wallet"></i> ৳ <span id="u-bal">0</span></div><div class="menu-btn" onclick="openSettings()"><i class="fas fa-ellipsis-v"></i></div></div>
         </header>
-
         <h3 style="margin: 25px 0 15px; text-align: left;">🔥 Play & Win</h3>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-            <div class="card" onclick="showScreen('ludo-category-screen'); renderCategories();" style="cursor:pointer; text-align:center;">
-                <i class="fas fa-dice" style="font-size: 3.5rem; color: #ff6b6b; margin-bottom: 10px;"></i>
-                <h3>Ludo</h3>
-                <p style="font-size:0.8rem; color:#aaa;">Auto Match</p>
-            </div>
-            <div class="card" onclick="openQuizLobby()" style="cursor:pointer; text-align:center;">
-                <i class="fas fa-brain" style="font-size: 3.5rem; color: #feca57; margin-bottom: 10px;"></i>
-                <h3>Quiz</h3>
-                <p style="font-size:0.8rem; color:#aaa;">One Q per Area</p>
-            </div>
+            <div class="card" onclick="showScreen('ludo-category-screen'); renderCategories();" style="cursor:pointer; text-align:center;"><i class="fas fa-dice" style="font-size: 3.5rem; color: #ff6b6b; margin-bottom: 10px;"></i><h3>Ludo</h3><p style="font-size:0.8rem; color:#aaa;">Auto Match</p></div>
+            <div class="card" onclick="openQuizLobby()" style="cursor:pointer; text-align:center;"><i class="fas fa-brain" style="font-size: 3.5rem; color: #feca57; margin-bottom: 10px;"></i><h3>Quiz</h3><p style="font-size:0.8rem; color:#aaa;">One Q per Area</p></div>
         </div>
     </div>
 
-    <!-- 3. LUDO CATEGORIES -->
-    <div id="ludo-category-screen" class="screen">
-        <button onclick="backToHome()" class="btn-outline"><i class="fas fa-arrow-left"></i> Home</button>
-        <h2>🏆 Select Match</h2>
-        <div id="category-list"></div>
-    </div>
+    <div id="ludo-category-screen" class="screen"><button onclick="backToHome()" class="btn-outline"><i class="fas fa-arrow-left"></i> Home</button><h2>🏆 Select Match</h2><div id="category-list"></div></div>
 
-    <!-- 4. MATCHMAKING SCREEN -->
     <div id="matchmaking-screen" class="screen" style="text-align:center; padding-top:100px;">
         <div class="radar"><div class="scan"></div></div>
         <h2 style="margin-top:20px; color:var(--cyan);">Searching Opponent...</h2>
-        <p id="search-status" style="color:#aaa;">Analyzing players...</p>
+        <p id="search-status" style="color:#aaa;">Waiting for player...</p>
         <div id="search-timer" style="display:none;">10</div>
         <button onclick="cancelSearch()" class="btn-red" style="width:auto; padding:10px 30px; margin-top:30px;">CANCEL</button>
     </div>
 
-    <!-- 5. QUIZ LOBBY -->
-    <div id="quiz-lobby-screen" class="screen">
-        <button onclick="backToHome()" class="btn-outline"><i class="fas fa-arrow-left"></i> Home</button>
-        <div class="card" style="background:rgba(255,193,7,0.1); border:1px solid var(--yellow); color:var(--yellow); text-align:left; margin-top:10px;">
-            <b>📢 NOTICE:</b> <span id="quiz-notice-text">Loading...</span>
-        </div>
-        <h3>🧠 Select Quiz Match</h3>
-        <div id="quiz-list-container" class="lobby-grid"></div>
-    </div>
-
-    <!-- 6. QUIZ GAME -->
-    <div id="quiz-game-screen" class="screen">
-        <div class="card">
-            <div style="display:flex; justify-content:space-between; color:#aaa;"><span id="q-count">1/10</span><span style="color:var(--green)" id="q-win">Win: 0৳</span></div>
-            <div id="q-timer" style="font-size:2rem; font-weight:bold; color:var(--yellow); margin:10px 0;">15s</div>
-            <h3 id="q-text" style="min-height:60px;">Loading...</h3>
-            <div id="opt-container" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div>
-        </div>
-    </div>
+    <div id="quiz-lobby-screen" class="screen"><button onclick="backToHome()" class="btn-outline"><i class="fas fa-arrow-left"></i> Home</button><div class="card" style="background:rgba(255,193,7,0.1); border:1px solid var(--yellow); color:var(--yellow); text-align:left; margin-top:10px;"><b>📢 NOTICE:</b> <span id="quiz-notice-text">Loading...</span></div><h3>🧠 Select Quiz Match</h3><div id="quiz-list-container" class="lobby-grid"></div></div>
+    <div id="quiz-game-screen" class="screen"><div class="card"><div style="display:flex; justify-content:space-between; color:#aaa;"><span id="q-count">1/10</span><span style="color:var(--green)" id="q-win">Win: 0৳</span></div><div id="q-timer" style="font-size:2rem; font-weight:bold; color:var(--yellow); margin:10px 0;">15s</div><h3 id="q-text" style="min-height:60px;">Loading...</h3><div id="opt-container" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div></div></div>
 </div>
 
-<!-- 7. LUDO GAME BOARD -->
 <div id="ludo-game" class="screen">
-    <div class="game-header">
-        <div class="game-badge" style="background:var(--primary);">Prize: <span id="g-prize">0</span>৳</div>
-        <div class="game-badge" style="background:#333;" onclick="alert('Cannot quit active match!')"><i class="fas fa-bars"></i></div>
-    </div>
-
+    <div class="game-header"><div class="game-badge" style="background:var(--primary);">Prize: <span id="g-prize">0</span>৳</div><div class="game-badge" style="background:#333;" onclick="alert('Cannot quit active match!')"><i class="fas fa-bars"></i></div></div>
     <div id="game-area">
-        <!-- P2 Dice (Green/Top) -->
-        <div class="dice-panel" id="panel-green" onclick="rollDiceRequest('green')">
-            <div class="scene"><div class="cube" id="cube-green"><div class="face front"><div class="dot center"></div></div><div class="face back"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div><div class="dot mid-left"></div><div class="dot mid-right"></div></div><div class="face right"><div class="dot top-left"></div><div class="dot center"></div><div class="dot bottom-right"></div></div><div class="face left"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div><div class="face top"><div class="dot top-left"></div><div class="dot bottom-right"></div></div><div class="face bottom"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot center"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div></div></div>
-            <div style="margin-top:5px; color:#009432; font-weight:bold; font-size:10px;">OPP (P2)</div>
-        </div>
-        
-        <!-- P1 Dice (Blue/Bottom) -->
-        <div class="dice-panel" id="panel-blue" onclick="rollDiceRequest('blue')">
-            <div class="scene"><div class="cube" id="cube-blue"><div class="face front"><div class="dot center"></div></div><div class="face back"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div><div class="dot mid-left"></div><div class="dot mid-right"></div></div><div class="face right"><div class="dot top-left"></div><div class="dot center"></div><div class="dot bottom-right"></div></div><div class="face left"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div><div class="face top"><div class="dot top-left"></div><div class="dot bottom-right"></div></div><div class="face bottom"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot center"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div></div></div>
-            <div style="margin-top:5px; color:#0652DD; font-weight:bold; font-size:10px;">YOU (P1)</div>
-        </div>
-
-        <div class="box_row">
-            <div class="box" style="border: 50px solid red;"><div class="circle border_red"></div><div class="circle border_red"></div><div class="circle border_red"></div><div class="circle border_red"></div></div>
-            <div class="v_lad">
-                <div class="v_lad_row"><div class="cell" id="cell-10"></div><div class="cell" id="cell-11"></div><div class="cell" id="cell-12"></div></div>
-                <div class="v_lad_row"><div class="cell" id="cell-9"></div><div class="cell bg-green" id="ghome-1"></div><div class="cell bg-green" id="cell-13"><span class="safe-star">&#9733;</span></div></div>
-                <div class="v_lad_row"><div class="cell" id="cell-8"><span class="safe-star">&#9733;</span></div><div class="cell bg-green" id="ghome-2"></div><div class="cell" id="cell-14"></div></div>
-                <div class="v_lad_row"><div class="cell" id="cell-7"></div><div class="cell bg-green" id="ghome-3"></div><div class="cell" id="cell-15"></div></div>
-                <div class="v_lad_row"><div class="cell" id="cell-6"></div><div class="cell bg-green" id="ghome-4"></div><div class="cell" id="cell-16"></div></div>
-                <div class="v_lad_row"><div class="cell" id="cell-5"></div><div class="cell bg-green" id="ghome-5"></div><div class="cell" id="cell-17"></div></div>
-            </div>
-            <div class="box" style="border: 50px solid #009432;"><div class="circle border_green" id="green-jail-0"></div><div class="circle border_green" id="green-jail-1"></div><div class="circle border_green" id="green-jail-2"></div><div class="circle border_green" id="green-jail-3"></div></div>
-        </div>
-        <div class="middle_row">
-            <div class="h_lad">
-                <div class="h_lad_row"><div class="cell" id="cell-51"></div><div class="cell bg-red" id="cell-0"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-1"></div><div class="cell" id="cell-2"></div><div class="cell" id="cell-3"></div><div class="cell" id="cell-4"></div></div>
-                <div class="h_lad_row"><div class="cell" id="cell-50"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div></div>
-                <div class="h_lad_row"><div class="cell" id="cell-49"></div><div class="cell" id="cell-48"></div><div class="cell bg-red" id="cell-47"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-46"></div><div class="cell" id="cell-45"></div><div class="cell" id="cell-44"></div></div>
-            </div>
-            <div class="ludo_home" id="winning-home"></div>
-            <div class="h_lad">
-                <div class="h_lad_row"><div class="cell" id="cell-18"></div><div class="cell" id="cell-19"></div><div class="cell" id="cell-20"></div><div class="cell bg-yellow" id="cell-21"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-22"></div><div class="cell" id="cell-23"></div></div>
-                <div class="h_lad_row"><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell" id="cell-24"></div></div>
-                <div class="h_lad_row"><div class="cell" id="cell-30"></div><div class="cell" id="cell-29"></div><div class="cell" id="cell-28"></div><div class="cell" id="cell-27"></div><div class="cell bg-yellow" id="cell-26"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-25"></div></div>
-            </div>
-        </div>
-        <div class="box_row">
-            <div class="box" style="border: 50px solid #0652DD;"><div class="circle border_blue" id="blue-jail-0"></div><div class="circle border_blue" id="blue-jail-1"></div><div class="circle border_blue" id="blue-jail-2"></div><div class="circle border_blue" id="blue-jail-3"></div></div>
-            <div class="v_lad">
-                <div class="v_lad_row"><div class="cell" id="cell-43"></div><div class="cell bg-blue" id="bhome-5"></div><div class="cell" id="cell-31"></div></div>
-                <div class="v_lad_row"><div class="cell" id="cell-42"></div><div class="cell bg-blue" id="bhome-4"></div><div class="cell" id="cell-32"></div></div>
-                <div class="v_lad_row"><div class="cell" id="cell-41"></div><div class="cell bg-blue" id="bhome-3"></div><div class="cell" id="cell-33"></div></div>
-                <div class="v_lad_row"><div class="cell" id="cell-40"></div><div class="cell bg-blue" id="bhome-2"></div><div class="cell bg-blue" id="cell-34"><span class="safe-star">&#9733;</span></div></div>
-                <div class="v_lad_row"><div class="cell bg-blue" id="cell-39"><span class="safe-star">&#9733;</span></div><div class="cell bg-blue" id="bhome-1"></div><div class="cell" id="cell-35"></div></div>
-                <div class="v_lad_row"><div class="cell" id="cell-38"></div><div class="cell" id="cell-37"></div><div class="cell" id="cell-36"></div></div>
-            </div>
-            <div class="box" style="border: 50px solid #f1c40f;"><div class="circle border_yellow"></div><div class="circle border_yellow"></div><div class="circle border_yellow"></div><div class="circle border_yellow"></div></div>
-        </div>
+        <div class="dice-panel" id="panel-green" onclick="rollDiceRequest('green')"><div class="scene"><div class="cube" id="cube-green"><div class="face front"><div class="dot center"></div></div><div class="face back"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div><div class="dot mid-left"></div><div class="dot mid-right"></div></div><div class="face right"><div class="dot top-left"></div><div class="dot center"></div><div class="dot bottom-right"></div></div><div class="face left"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div><div class="face top"><div class="dot top-left"></div><div class="dot bottom-right"></div></div><div class="face bottom"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot center"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div></div></div><div style="margin-top:5px; color:#009432; font-weight:bold; font-size:10px;">OPP (P2)</div></div>
+        <div class="dice-panel" id="panel-blue" onclick="rollDiceRequest('blue')"><div class="scene"><div class="cube" id="cube-blue"><div class="face front"><div class="dot center"></div></div><div class="face back"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div><div class="dot mid-left"></div><div class="dot mid-right"></div></div><div class="face right"><div class="dot top-left"></div><div class="dot center"></div><div class="dot bottom-right"></div></div><div class="face left"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div><div class="face top"><div class="dot top-left"></div><div class="dot bottom-right"></div></div><div class="face bottom"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot center"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div></div></div><div style="margin-top:5px; color:#0652DD; font-weight:bold; font-size:10px;">YOU (P1)</div></div>
+        <div class="box_row"><div class="box" style="border: 50px solid red;"><div class="circle border_red"></div><div class="circle border_red"></div><div class="circle border_red"></div><div class="circle border_red"></div></div><div class="v_lad"><div class="v_lad_row"><div class="cell" id="cell-10"></div><div class="cell" id="cell-11"></div><div class="cell" id="cell-12"></div></div><div class="v_lad_row"><div class="cell" id="cell-9"></div><div class="cell bg-green" id="ghome-1"></div><div class="cell bg-green" id="cell-13"><span class="safe-star">&#9733;</span></div></div><div class="v_lad_row"><div class="cell" id="cell-8"><span class="safe-star">&#9733;</span></div><div class="cell bg-green" id="ghome-2"></div><div class="cell" id="cell-14"></div></div><div class="v_lad_row"><div class="cell" id="cell-7"></div><div class="cell bg-green" id="ghome-3"></div><div class="cell" id="cell-15"></div></div><div class="v_lad_row"><div class="cell" id="cell-6"></div><div class="cell bg-green" id="ghome-4"></div><div class="cell" id="cell-16"></div></div><div class="v_lad_row"><div class="cell" id="cell-5"></div><div class="cell bg-green" id="ghome-5"></div><div class="cell" id="cell-17"></div></div></div><div class="box" style="border: 50px solid #009432;"><div class="circle border_green" id="green-jail-0"></div><div class="circle border_green" id="green-jail-1"></div><div class="circle border_green" id="green-jail-2"></div><div class="circle border_green" id="green-jail-3"></div></div></div>
+        <div class="middle_row"><div class="h_lad"><div class="h_lad_row"><div class="cell" id="cell-51"></div><div class="cell bg-red" id="cell-0"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-1"></div><div class="cell" id="cell-2"></div><div class="cell" id="cell-3"></div><div class="cell" id="cell-4"></div></div><div class="h_lad_row"><div class="cell" id="cell-50"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div></div><div class="h_lad_row"><div class="cell" id="cell-49"></div><div class="cell" id="cell-48"></div><div class="cell bg-red" id="cell-47"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-46"></div><div class="cell" id="cell-45"></div><div class="cell" id="cell-44"></div></div></div><div class="ludo_home" id="winning-home"></div><div class="h_lad"><div class="h_lad_row"><div class="cell" id="cell-18"></div><div class="cell" id="cell-19"></div><div class="cell" id="cell-20"></div><div class="cell bg-yellow" id="cell-21"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-22"></div><div class="cell" id="cell-23"></div></div><div class="h_lad_row"><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell" id="cell-24"></div></div><div class="h_lad_row"><div class="cell" id="cell-30"></div><div class="cell" id="cell-29"></div><div class="cell" id="cell-28"></div><div class="cell" id="cell-27"></div><div class="cell bg-yellow" id="cell-26"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-25"></div></div></div></div>
+        <div class="box_row"><div class="box" style="border: 50px solid #0652DD;"><div class="circle border_blue" id="blue-jail-0"></div><div class="circle border_blue" id="blue-jail-1"></div><div class="circle border_blue" id="blue-jail-2"></div><div class="circle border_blue" id="blue-jail-3"></div></div><div class="v_lad"><div class="v_lad_row"><div class="cell" id="cell-43"></div><div class="cell bg-blue" id="bhome-5"></div><div class="cell" id="cell-31"></div></div><div class="v_lad_row"><div class="cell" id="cell-42"></div><div class="cell bg-blue" id="bhome-4"></div><div class="cell" id="cell-32"></div></div><div class="v_lad_row"><div class="cell" id="cell-41"></div><div class="cell bg-blue" id="bhome-3"></div><div class="cell" id="cell-33"></div></div><div class="v_lad_row"><div class="cell" id="cell-40"></div><div class="cell bg-blue" id="bhome-2"></div><div class="cell bg-blue" id="cell-34"><span class="safe-star">&#9733;</span></div></div><div class="v_lad_row"><div class="cell bg-blue" id="cell-39"><span class="safe-star">&#9733;</span></div><div class="cell bg-blue" id="bhome-1"></div><div class="cell" id="cell-35"></div></div><div class="v_lad_row"><div class="cell" id="cell-38"></div><div class="cell" id="cell-37"></div><div class="cell" id="cell-36"></div></div></div><div class="box" style="border: 50px solid #f1c40f;"><div class="circle border_yellow"></div><div class="circle border_yellow"></div><div class="circle border_yellow"></div><div class="circle border_yellow"></div></div></div>
     </div>
 </div>
 
-<!-- SIDEBAR WALLET -->
 <div id="main-wallet-btn" class="wallet-fab" onclick="toggleSidebar()" style="display: none;"><i class="fas fa-wallet"></i></div>
 <div id="wallet-sidebar" class="sidebar">
-    <div class="wallet-top">
-        <div class="close-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></div>
-        <small style="color:#aaa;">AVAILABLE BALANCE</small><div class="wallet-bal">৳ <span id="side-bal">0</span></div>
-        <div class="wallet-tabs"><button class="tab-btn tab-active" id="btn-dep" onclick="switchTab('deposit')">Deposit</button><button class="tab-btn" id="btn-with" onclick="switchTab('withdraw')">Withdraw</button></div>
-    </div>
-    <div class="wallet-content">
-        <div id="dep-section">
-            <div class="card" style="margin-bottom:15px; text-align:left;"><small>Send Money To:</small><div style="font-size:1.1rem; font-weight:bold; color:var(--cyan); display:flex; justify-content:space-between;"><span id="admin-bkash">Loading...</span><i class="fas fa-copy" onclick="copyNumber()"></i></div></div>
-            <input type="number" id="dep-amount" placeholder="Amount (Min 200)">
-            <input type="text" id="dep-trx" placeholder="Transaction ID">
-            <button class="btn-green" onclick="submitDeposit()" style="margin-top:10px;">Submit Request</button>
-        </div>
-        <div id="with-section" style="display:none;">
-            <input type="number" id="with-amount" placeholder="Amount (Min 500)"><input type="text" id="with-num" placeholder="Your Number"><input type="password" id="with-pass" placeholder="Account Password"><button class="btn-red" onclick="submitWithdraw()" style="margin-top:10px;">Request Withdraw</button>
-        </div>
-    </div>
+    <div class="wallet-top"><div class="close-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></div><small style="color:#aaa;">AVAILABLE BALANCE</small><div class="wallet-bal">৳ <span id="side-bal">0</span></div><div class="wallet-tabs"><button class="tab-btn tab-active" id="btn-dep" onclick="switchTab('deposit')">Deposit</button><button class="tab-btn" id="btn-with" onclick="switchTab('withdraw')">Withdraw</button></div></div>
+    <div class="wallet-content"><div id="dep-section"><div class="card" style="margin-bottom:15px; text-align:left;"><small>Send Money To:</small><div style="font-size:1.1rem; font-weight:bold; color:var(--cyan); display:flex; justify-content:space-between;"><span id="admin-bkash">Loading...</span><i class="fas fa-copy" onclick="copyNumber()"></i></div></div><input type="number" id="dep-amount" placeholder="Amount (Min 200)"><input type="text" id="dep-trx" placeholder="Transaction ID"><button class="btn-green" onclick="submitDeposit()" style="margin-top:10px;">Submit Request</button></div><div id="with-section" style="display:none;"><input type="number" id="with-amount" placeholder="Amount (Min 500)"><input type="text" id="with-num" placeholder="Your Number"><input type="password" id="with-pass" placeholder="Account Password"><button class="btn-red" onclick="submitWithdraw()" style="margin-top:10px;">Request Withdraw</button></div></div>
 </div>
 
-<!-- SETTINGS & NOTIFICATIONS -->
 <div id="settings-modal" class="settings-modal"><div class="settings-card"><div class="close-settings" onclick="closeSettings()">&times;</div><h3>⚙️ Settings</h3><p style="color:#aaa;">User ID: <span id="modal-promo">...</span></p><div class="menu-list-item" onclick="openPassModal()"><div><i class="fas fa-lock"></i> Change Password</div></div><div class="menu-list-item" onclick="auth.signOut(); closeSettings();" style="border-color:var(--red);"><div style="color:var(--red);"><i class="fas fa-sign-out-alt"></i> Logout</div></div></div></div>
 <div id="pass-modal" class="settings-modal"><div class="settings-card"><h3>🔒 Security Check</h3><input type="password" id="old-pass" placeholder="Old Password"><input type="password" id="new-pass" placeholder="New Password"><input type="password" id="conf-pass" placeholder="Confirm Password"><button class="btn-green" onclick="updatePasswordSecure()">Change</button><button class="btn-outline" onclick="closePassModal()">Cancel</button></div></div>
 <div id="custom-modal" class="modal-overlay"><div class="modal-box"><h3 id="modal-title" style="margin-top:0; color:var(--primary);">Notification</h3><p id="modal-msg" style="color:#ddd; margin:15px 0;">Message here</p><div id="modal-actions" style="display:flex; gap:10px; justify-content:center;"></div></div></div>
@@ -540,40 +393,49 @@
             showScreen('matchmaking-screen');
             let timeLeft = 10; const timerEl = document.getElementById('search-timer'); timerEl.innerText = timeLeft;
             try {
+                // Step 1: Check for any open room
                 await findOrCreateMatch(tid, fee, win);
-                searchInterval = setInterval(() => { timeLeft--; timerEl.innerText = timeLeft; if(timeLeft <= 0) { clearInterval(searchInterval); assignBot(); } }, 1000);
+                // Step 2: Start 10s Timer
+                searchInterval = setInterval(() => { 
+                    timeLeft--; timerEl.innerText = timeLeft; 
+                    if(timeLeft <= 0) { 
+                        clearInterval(searchInterval); 
+                        assignBot(); // Timer expired, assign bot 
+                    } 
+                }, 1000);
             } catch(e) { alert("Error: " + e.message); backToHome(); }
         });
     }
 
     async function findOrCreateMatch(tid, fee, win) {
         const matchesRef = db.collection('matches');
-        // IMPORTANT: Search for *any* waiting match, not just ones created by others
-        // The transaction will handle the concurrency
+        // TRANSACTION: Finds a waiting room OR creates a new one
         await db.runTransaction(async (transaction) => {
             const snapshot = await matchesRef.where('type', '==', tid).where('status', '==', 'waiting').limit(1).get();
+            
             if (!snapshot.empty) {
+                // Found a waiting room!
                 const doc = snapshot.docs[0];
                 const matchData = doc.data();
                 
-                // Prevent self-match (if user clicked play quickly twice or connection lag)
+                // Prevent joining self
                 if(matchData.p1 === user.uid) { 
-                    searchingMatchId = doc.id; 
+                    searchingMatchId = doc.id; // I am creator, must wait
                     return; 
                 }
 
-                // JOIN EXISTING MATCH (Real Player Found)
+                // JOIN IT (Become P2)
                 transaction.update(matchesRef.doc(doc.id), { 
                     p2: user.uid, 
                     p2Name: user.email.split('@')[0], 
-                    status: 'active', 
+                    status: 'active', // GAME ON!
                     gameStartTime: Date.now(), 
                     p2Ready: true, 
                     p1Ready: true 
                 });
                 searchingMatchId = doc.id;
             } else {
-                // CREATE NEW MATCH (Wait for opponent)
+                // CREATE NEW ROOM (Wait for opponent)
                 const newDocRef = matchesRef.doc();
                 transaction.set(newDocRef, { 
                     type: tid, fee: fee, prize: win, 
@@ -586,7 +448,6 @@
             }
         });
 
-        // Listen for updates (P2 join or Bot)
         if(searchingMatchId) { waitForOpponent(searchingMatchId); }
     }
 
@@ -594,8 +455,12 @@
         const unsub = db.collection('matches').doc(mid).onSnapshot(doc => {
             if(!doc.exists) return;
             const data = doc.data();
-            // If active (P2 joined), enter game
-            if(data.status === 'active') { clearInterval(searchInterval); enterGame(mid); unsub(); }
+            // If someone joined (Status became active), Start Game immediately!
+            if(data.status === 'active') { 
+                clearInterval(searchInterval); // Stop Bot Timer
+                enterGame(mid); 
+                unsub(); 
+            }
         });
     }
 
@@ -607,7 +472,7 @@
                 const doc = await transaction.get(docRef);
                 if(!doc.exists) return;
                 
-                // ONLY add bot if p2 is empty. If a human joined in the last ms, this will fail safely.
+                // CRITICAL CHECK: Is P2 still empty?
                 const data = doc.data();
                 if(!data.p2) { 
                     const randomNames = ["Rahim_Pro", "King_Ludo", "Sultana_BD", "Tiger_75"];
@@ -719,6 +584,7 @@
                 const el = document.getElementById(`t-${color}-${i}`);
                 if(el && ((pos===-1 && roll===6) || (pos!==-1 && pos+roll<=56))) { el.classList.add('movable'); canMove = true; }
             });
+            
             if(!canMove) {
                 setTimeout(() => {
                     db.collection('matches').doc(currentMatch).update({ turn: color === 'blue' ? 'green' : 'blue', diceRolled: false });

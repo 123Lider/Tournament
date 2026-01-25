@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pro Gaming App</title>
+    <title>Ludo Tournament</title>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -14,8 +14,9 @@
 
     <style>
         /* --- GLOBAL STYLES --- */
-        :root { --primary: #FF005C; --bg: #090910; --card: #14141F; --text: #fff; --green: #00F5D4; --cyan: #00D2D3; --yellow: #F1C40F; --red: #ff4757; }
+        :root { --primary: #FF005C; --bg: #2c3e50; --card: #14141F; --text: #fff; --green: #00F5D4; --cyan: #00D2D3; --yellow: #F1C40F; --red: #ff4757; }
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; text-align: center; overflow-x: hidden; user-select: none; -webkit-tap-highlight-color: transparent; }
+        
         .container { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding-bottom: 90px;}
         .screen { display: none; padding: 20px; animation: fadeIn 0.4s ease; }
         .active { display: block; }
@@ -33,15 +34,20 @@
         header { background: rgba(20, 20, 31, 0.9); backdrop-filter: blur(10px); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .balance-pill { background: linear-gradient(90deg, #11998e, #38ef7d); color: #fff; padding: 6px 15px; border-radius: 50px; font-weight: bold; cursor: pointer; }
         
-        /* RADAR SCANNER */
+        /* LOBBY & RADAR */
+        .lobby-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .slot-card { background: #191925; border: 1px solid rgba(255,255,255,0.05); border-radius: 15px; padding: 20px 10px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.2s; cursor: pointer; }
+        .slot-icon { font-size: 1.8rem; margin-bottom: 8px; color: var(--cyan); }
+        .slot-status { font-size: 0.7rem; padding: 3px 8px; border-radius: 4px; margin-top: 5px; }
+        .st-wait { color: var(--yellow); background: rgba(241, 196, 15, 0.1); }
         .radar { width: 150px; height: 150px; background: rgba(0, 245, 212, 0.1); border: 2px solid var(--cyan); border-radius: 50%; position: relative; margin: 0 auto; overflow: hidden; box-shadow: 0 0 20px rgba(0, 245, 212, 0.3); }
         .scan { width: 100%; height: 100%; background: linear-gradient(180deg, rgba(0, 245, 212, 0.6), transparent); position: absolute; animation: radar-spin 2s linear infinite; transform-origin: bottom center; border-radius: 50%; clip-path: polygon(50% 50%, 0 0, 100% 0); opacity: 0.5; }
         @keyframes radar-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* GAME BOARD */
+        /* LUDO BOARD */
         #ludo-game { position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; background-color: #2c3e50; z-index: 9999; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; visibility: hidden; opacity: 0; transition: 0.3s; }
         #ludo-game.active { visibility: visible; opacity: 1; }
-        #game-area { width: 750px; height: 750px; background: white; box-shadow: 0 0 30px rgba(0,0,0,0.6); border: 5px solid #000; transform-origin: center; }
+        #game-area { width: 750px; height: 750px; background: white; box-shadow: 0 0 30px rgba(0,0,0,0.6); border: 5px solid #000; transform-origin: center; transition: transform 0.5s ease; }
         .box_row { height: 300px; width: 750px; display: flex; }
         .middle_row { height: 150px; width: 750px; display: flex; }
         .box { height: 300px; width: 300px; position: relative; box-sizing: border-box; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); place-items: center; padding: 40px; }
@@ -65,9 +71,10 @@
         .stack-2 { transform: translate(-100%, -20%); } .stack-3 { transform: translate(0%, -20%); }
         .stack-center { transform: translate(-50%, -60%) scale(0.8); }
 
-        .dice-panel { position: absolute; z-index: 200; background: rgba(255, 255, 255, 0.9); padding: 10px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 3px solid #333; cursor: pointer; display: flex; flex-direction: column; align-items: center; width: 60px; left: 50%; transform: translateX(-50%); transition: 0.3s; opacity: 0.5; pointer-events: none;}
-        #panel-blue { bottom: -120px; border-color: #0652DD; } 
-        #panel-green { top: -120px; border-color: #009432; } 
+        .dice-panel { position: absolute; z-index: 200; background: rgba(255, 255, 255, 0.9); padding: 10px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 3px solid #333; cursor: pointer; display: flex; flex-direction: column; align-items: center; width: 60px; left: 50%; transform: translateX(-50%); transition: all 0.5s ease; opacity: 0.5; pointer-events: none;}
+        .panel-bottom { bottom: -120px; top: auto; pointer-events: all; opacity: 1; }
+        .panel-top { top: -120px; bottom: auto; pointer-events: none; opacity: 0.5; }
+        #panel-blue { border-color: #0652DD; } #panel-green { border-color: #009432; } 
 
         .scene { width: 50px; height: 50px; perspective: 600px; }
         .cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transform: translateZ(-25px); transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -78,35 +85,68 @@
         .top { transform: rotateX(90deg) translateZ(25px); } .bottom { transform: rotateX(-90deg) translateZ(25px); }
         .center { grid-area: 2 / 2; } .top-left { grid-area: 1 / 1; } .top-right { grid-area: 1 / 3; } .mid-left { grid-area: 2 / 1; } .mid-right { grid-area: 2 / 3; } .bottom-left { grid-area: 3 / 1; } .bottom-right { grid-area: 3 / 3; }
 
-        /* WALLET & SETTINGS */
-        .wallet-fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: linear-gradient(135deg, var(--green), #009432); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 0 20px rgba(0, 245, 212, 0.4); z-index: 100; cursor: pointer; border: 2px solid #fff; }
+        .game-header { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; z-index: 300; pointer-events: none; width: 95%; margin: 0 auto; }
+        .game-badge { background: rgba(0,0,0,0.8); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; pointer-events: all; }
+
+        /* --- FIX: BANNER STYLES STRICTLY 320x50 --- */
+        .ad-banner {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            width: 320px; 
+            height: 50px !important; /* Force fixed height */
+            z-index: 99999; 
+            display: flex; align-items: center; justify-content: center;
+            background: #ffffff;
+            border: 2px dashed #ff4757; /* Dashed border looks less intrusive */
+            color: #000; font-size: 10px; overflow: hidden; /* Hide anything extra */
+        }
+        .ad-top { top: 60px; } /* Just below header */
+        .ad-bottom { bottom: 10px; } /* Fixed at bottom */
+
+        /* WALLET FAB & SIDEBAR */
+        .wallet-fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: linear-gradient(135deg, var(--green), #009432); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 0 20px rgba(0, 245, 212, 0.4); z-index: 100; cursor: pointer; border: 2px solid #fff; transition: transform 0.2s; }
         .sidebar { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100vh; background: #101018; z-index: 200; transition: 0.4s; padding: 0; box-sizing: border-box; overflow-y: auto; }
         .sidebar.open { right: 0; }
         .wallet-top { background: linear-gradient(180deg, #1F1F2E, #101018); padding: 30px 20px 20px; text-align: center; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 10; }
         .close-btn { position: absolute; top: 20px; left: 20px; font-size: 1.5rem; color: #aaa; cursor: pointer; }
         .tab-btn { background: #333; border: none; padding: 8px 20px; color: #aaa; border-radius: 50px; cursor: pointer; }
         .tab-active { background: var(--green); color: black; font-weight: bold; }
-        .menu-btn { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-left: 10px; border: 1px solid rgba(255,255,255,0.1); }
         
-        /* MODALS */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); animation: fadeIn 0.3s; }
-        .modal-box { background: #191925; width: 85%; max-width: 320px; padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5); transform: scale(0.9); animation: popUp 0.3s forwards; }
+        .menu-btn { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-left: 10px; border: 1px solid rgba(255,255,255,0.1); }
+
+        /* --- FIXED MODALS (Notification & Settings) --- */
+        .modal-overlay, .settings-modal { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.85); z-index: 10000; 
+            display: none; /* Hidden by default */
+            align-items: center; justify-content: center; 
+            backdrop-filter: blur(5px); animation: fadeIn 0.3s; 
+        }
+        
+        /* Modal Box Styles */
+        .modal-box, .settings-card { 
+            background: #191925; width: 85%; max-width: 320px; 
+            padding: 25px; border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5); 
+            transform: scale(0.9); animation: popUp 0.3s forwards; 
+            position: relative;
+        }
+        
         @keyframes popUp { to { transform: scale(1); } }
+        
         .modal-btn { padding: 10px 25px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; font-size: 0.9rem; flex: 1; }
         .m-btn-yes { background: linear-gradient(45deg, #00b894, #00cec9); color: #000; }
         .m-btn-no { background: transparent; border: 1px solid #ff4757; color: #ff4757; }
         
-        /* QUIZ LOBBY GRID */
-        .lobby-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .slot-card { background: #191925; border: 1px solid rgba(255,255,255,0.05); border-radius: 15px; padding: 20px 10px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.2s; cursor: pointer; }
-        .slot-icon { font-size: 1.8rem; margin-bottom: 8px; color: var(--cyan); }
-        .slot-status { font-size: 0.7rem; padding: 3px 8px; border-radius: 4px; margin-top: 5px; }
-        .st-wait { color: var(--yellow); background: rgba(241, 196, 15, 0.1); }
+        /* Settings List Item */
+        .menu-list-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); }
+        .close-settings { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: #aaa; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- 1. AUTH SCREEN -->
     <div id="auth-screen" class="screen active">
         <div class="card" style="margin-top: 15vh; padding: 30px;">
             <h1 style="color:var(--primary);">GAMING<span style="color:#fff">APP</span></h1>
@@ -116,6 +156,7 @@
         </div>
     </div>
 
+    <!-- 2. HOME SCREEN -->
     <div id="home-screen" class="screen">
         <header>
             <div style="text-align: left;"><small>Welcome,</small><br><b id="u-name">Player</b></div>
@@ -144,12 +185,39 @@
 
 <div id="ludo-game" class="screen">
     <div class="game-header"><div class="game-badge" style="background:var(--primary);">Prize: <span id="g-prize">0</span>৳</div><div class="game-badge" style="background:#333;" onclick="alert('Cannot quit active match!')"><i class="fas fa-bars"></i></div></div>
+
+    <!-- ===== TOP ADSENSE BANNER ===== -->
+    <div class="ad-banner ad-top">
+        <span style="color:#555;">AD</span>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6478754965971284" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:320px;height:50px"
+             data-ad-client="ca-pub-6478754965971284"
+             data-ad-slot="6544068798"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
     <div id="game-area">
-        <div class="dice-panel" id="panel-green" onclick="rollDiceRequest('green')"><div class="scene"><div class="cube" id="cube-green"><div class="face front"><div class="dot center"></div></div><div class="face back"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div><div class="dot mid-left"></div><div class="dot mid-right"></div></div><div class="face right"><div class="dot top-left"></div><div class="dot center"></div><div class="dot bottom-right"></div></div><div class="face left"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div><div class="face top"><div class="dot top-left"></div><div class="dot bottom-right"></div></div><div class="face bottom"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot center"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div></div></div><div style="margin-top:5px; color:#009432; font-weight:bold; font-size:10px;">OPP (P2)</div></div>
-        <div class="dice-panel" id="panel-blue" onclick="rollDiceRequest('blue')"><div class="scene"><div class="cube" id="cube-blue"><div class="face front"><div class="dot center"></div></div><div class="face back"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div><div class="dot mid-left"></div><div class="dot mid-right"></div></div><div class="face right"><div class="dot top-left"></div><div class="dot center"></div><div class="dot bottom-right"></div></div><div class="face left"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div><div class="face top"><div class="dot top-left"></div><div class="dot bottom-right"></div></div><div class="face bottom"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot center"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div></div></div><div style="margin-top:5px; color:#0652DD; font-weight:bold; font-size:10px;">YOU (P1)</div></div>
+        <div class="dice-panel" id="panel-green" onclick="rollDiceRequest('green')"><div class="scene"><div class="cube" id="cube-green"><div class="face front"><div class="dot center"></div></div><div class="face back"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div><div class="dot mid-left"></div><div class="dot mid-right"></div></div><div class="face right"><div class="dot top-left"></div><div class="dot center"></div><div class="dot bottom-right"></div></div><div class="face left"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div><div class="face top"><div class="dot top-left"></div><div class="dot bottom-right"></div></div><div class="face bottom"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot center"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div></div></div><div id="txt-green" style="margin-top:5px; color:#009432; font-weight:bold; font-size:10px;">OPP (P2)</div></div>
+        <div class="dice-panel" id="panel-blue" onclick="rollDiceRequest('blue')"><div class="scene"><div class="cube" id="cube-blue"><div class="face front"><div class="dot center"></div></div><div class="face back"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div><div class="dot mid-left"></div><div class="dot mid-right"></div></div><div class="face right"><div class="dot top-left"></div><div class="dot center"></div><div class="dot bottom-right"></div></div><div class="face left"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div><div class="face top"><div class="dot top-left"></div><div class="dot bottom-right"></div></div><div class="face bottom"><div class="dot top-left"></div><div class="dot bottom-right"></div><div class="dot center"></div><div class="dot top-right"></div><div class="dot bottom-left"></div></div></div></div><div id="txt-blue" style="margin-top:5px; color:#0652DD; font-weight:bold; font-size:10px;">YOU (P1)</div></div>
         <div class="box_row"><div class="box" style="border: 50px solid red;"><div class="circle border_red"></div><div class="circle border_red"></div><div class="circle border_red"></div><div class="circle border_red"></div></div><div class="v_lad"><div class="v_lad_row"><div class="cell" id="cell-10"></div><div class="cell" id="cell-11"></div><div class="cell" id="cell-12"></div></div><div class="v_lad_row"><div class="cell" id="cell-9"></div><div class="cell bg-green" id="ghome-1"></div><div class="cell bg-green" id="cell-13"><span class="safe-star">&#9733;</span></div></div><div class="v_lad_row"><div class="cell" id="cell-8"><span class="safe-star">&#9733;</span></div><div class="cell bg-green" id="ghome-2"></div><div class="cell" id="cell-14"></div></div><div class="v_lad_row"><div class="cell" id="cell-7"></div><div class="cell bg-green" id="ghome-3"></div><div class="cell" id="cell-15"></div></div><div class="v_lad_row"><div class="cell" id="cell-6"></div><div class="cell bg-green" id="ghome-4"></div><div class="cell" id="cell-16"></div></div><div class="v_lad_row"><div class="cell" id="cell-5"></div><div class="cell bg-green" id="ghome-5"></div><div class="cell" id="cell-17"></div></div></div><div class="box" style="border: 50px solid #009432;"><div class="circle border_green" id="green-jail-0"></div><div class="circle border_green" id="green-jail-1"></div><div class="circle border_green" id="green-jail-2"></div><div class="circle border_green" id="green-jail-3"></div></div></div>
         <div class="middle_row"><div class="h_lad"><div class="h_lad_row"><div class="cell" id="cell-51"></div><div class="cell bg-red" id="cell-0"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-1"></div><div class="cell" id="cell-2"></div><div class="cell" id="cell-3"></div><div class="cell" id="cell-4"></div></div><div class="h_lad_row"><div class="cell" id="cell-50"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div></div><div class="h_lad_row"><div class="cell" id="cell-49"></div><div class="cell" id="cell-48"></div><div class="cell bg-red" id="cell-47"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-46"></div><div class="cell" id="cell-45"></div><div class="cell" id="cell-44"></div></div></div><div class="ludo_home" id="winning-home"></div><div class="h_lad"><div class="h_lad_row"><div class="cell" id="cell-18"></div><div class="cell" id="cell-19"></div><div class="cell" id="cell-20"></div><div class="cell bg-yellow" id="cell-21"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-22"></div><div class="cell" id="cell-23"></div></div><div class="h_lad_row"><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell" id="cell-24"></div></div><div class="h_lad_row"><div class="cell" id="cell-30"></div><div class="cell" id="cell-29"></div><div class="cell" id="cell-28"></div><div class="cell" id="cell-27"></div><div class="cell bg-yellow" id="cell-26"><span class="safe-star">&#9733;</span></div><div class="cell" id="cell-25"></div></div></div></div>
         <div class="box_row"><div class="box" style="border: 50px solid #0652DD;"><div class="circle border_blue" id="blue-jail-0"></div><div class="circle border_blue" id="blue-jail-1"></div><div class="circle border_blue" id="blue-jail-2"></div><div class="circle border_blue" id="blue-jail-3"></div></div><div class="v_lad"><div class="v_lad_row"><div class="cell" id="cell-43"></div><div class="cell bg-blue" id="bhome-5"></div><div class="cell" id="cell-31"></div></div><div class="v_lad_row"><div class="cell" id="cell-42"></div><div class="cell bg-blue" id="bhome-4"></div><div class="cell" id="cell-32"></div></div><div class="v_lad_row"><div class="cell" id="cell-41"></div><div class="cell bg-blue" id="bhome-3"></div><div class="cell" id="cell-33"></div></div><div class="v_lad_row"><div class="cell" id="cell-40"></div><div class="cell bg-blue" id="bhome-2"></div><div class="cell bg-blue" id="cell-34"><span class="safe-star">&#9733;</span></div></div><div class="v_lad_row"><div class="cell bg-blue" id="cell-39"><span class="safe-star">&#9733;</span></div><div class="cell bg-blue" id="bhome-1"></div><div class="cell" id="cell-35"></div></div><div class="v_lad_row"><div class="cell" id="cell-38"></div><div class="cell" id="cell-37"></div><div class="cell" id="cell-36"></div></div></div><div class="box" style="border: 50px solid #f1c40f;"><div class="circle border_yellow"></div><div class="circle border_yellow"></div><div class="circle border_yellow"></div><div class="circle border_yellow"></div></div></div>
+    </div>
+
+    <!-- ===== BOTTOM ADSENSE BANNER ===== -->
+    <div class="ad-banner ad-bottom">
+        <span style="color:#555;">AD</span>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6478754965971284" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:320px;height:50px"
+             data-ad-client="ca-pub-"
+             data-ad-slot=""></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
 </div>
 
@@ -159,6 +227,7 @@
     <div class="wallet-content"><div id="dep-section"><div class="card" style="margin-bottom:15px; text-align:left;"><small>Send Money To:</small><div style="font-size:1.1rem; font-weight:bold; color:var(--cyan); display:flex; justify-content:space-between;"><span id="admin-bkash">Loading...</span><i class="fas fa-copy" onclick="copyNumber()"></i></div></div><input type="number" id="dep-amount" placeholder="Amount (Min 200)"><input type="text" id="dep-trx" placeholder="Transaction ID"><button class="btn-green" onclick="submitDeposit()" style="margin-top:10px;">Submit Request</button></div><div id="with-section" style="display:none;"><input type="number" id="with-amount" placeholder="Amount (Min 500)"><input type="text" id="with-num" placeholder="Your Number"><input type="password" id="with-pass" placeholder="Account Password"><button class="btn-red" onclick="submitWithdraw()" style="margin-top:10px;">Request Withdraw</button></div></div>
 </div>
 
+<!-- FIXED MODALS -->
 <div id="settings-modal" class="settings-modal"><div class="settings-card"><div class="close-settings" onclick="closeSettings()">&times;</div><h3>⚙️ Settings</h3><p style="color:#aaa;">User ID: <span id="modal-promo">...</span></p><div class="menu-list-item" onclick="openPassModal()"><div><i class="fas fa-lock"></i> Change Password</div></div><div class="menu-list-item" onclick="auth.signOut(); closeSettings();" style="border-color:var(--red);"><div style="color:var(--red);"><i class="fas fa-sign-out-alt"></i> Logout</div></div></div></div>
 <div id="pass-modal" class="settings-modal"><div class="settings-card"><h3>🔒 Security Check</h3><input type="password" id="old-pass" placeholder="Old Password"><input type="password" id="new-pass" placeholder="New Password"><input type="password" id="conf-pass" placeholder="Confirm Password"><button class="btn-green" onclick="updatePasswordSecure()">Change</button><button class="btn-outline" onclick="closePassModal()">Cancel</button></div></div>
 <div id="custom-modal" class="modal-overlay"><div class="modal-box"><h3 id="modal-title" style="margin-top:0; color:var(--primary);">Notification</h3><p id="modal-msg" style="color:#ddd; margin:15px 0;">Message here</p><div id="modal-actions" style="display:flex; gap:10px; justify-content:center;"></div></div></div>
@@ -179,8 +248,8 @@
     let user = null, balance = 0, currentMatch = null;
     let quizData=[], currentQ=0, quizTimer=null, quizEarned=0, currentReward=0;
     
-    // GLOBAL STATE FOR OPTIMISTIC UI
     window.gameState = null;
+    let isRotated = false; 
 
     const soundDice = new Audio('https://www.soundjay.com/misc/sounds/dice-throw-1.mp3'); 
     const soundMove = new Audio('https://www.soundjay.com/button/sounds/button-16.mp3');
@@ -379,7 +448,6 @@
         quizTimer = setInterval(() => { t--; document.getElementById('q-timer').innerText = t+"s"; if(t<=0) { clearInterval(quizTimer); alert("Time Up!"); backToHome(); } }, 1000);
     }
 
-    // --- REAL MULTIPLAYER LOGIC ---
     let searchInterval = null; let searchingMatchId = null;
     function renderCategories() { 
         const div = document.getElementById('category-list'); div.innerHTML = ""; 
@@ -393,14 +461,12 @@
             showScreen('matchmaking-screen');
             let timeLeft = 10; const timerEl = document.getElementById('search-timer'); timerEl.innerText = timeLeft;
             try {
-                // Step 1: Check for any open room
                 await findOrCreateMatch(tid, fee, win);
-                // Step 2: Start 10s Timer
                 searchInterval = setInterval(() => { 
                     timeLeft--; timerEl.innerText = timeLeft; 
                     if(timeLeft <= 0) { 
                         clearInterval(searchInterval); 
-                        assignBot(); // Timer expired, assign bot 
+                        assignBot(); 
                     } 
                 }, 1000);
             } catch(e) { alert("Error: " + e.message); backToHome(); }
@@ -409,33 +475,19 @@
 
     async function findOrCreateMatch(tid, fee, win) {
         const matchesRef = db.collection('matches');
-        // TRANSACTION: Finds a waiting room OR creates a new one
         await db.runTransaction(async (transaction) => {
             const snapshot = await matchesRef.where('type', '==', tid).where('status', '==', 'waiting').limit(1).get();
-            
             if (!snapshot.empty) {
-                // Found a waiting room!
                 const doc = snapshot.docs[0];
                 const matchData = doc.data();
-                
-                // Prevent joining self
-                if(matchData.p1 === user.uid) { 
-                    searchingMatchId = doc.id; // I am creator, must wait
-                    return; 
-                }
-
-                // JOIN IT (Become P2)
+                if(matchData.p1 === user.uid) { searchingMatchId = doc.id; return; }
                 transaction.update(matchesRef.doc(doc.id), { 
-                    p2: user.uid, 
-                    p2Name: user.email.split('@')[0], 
-                    status: 'active', // GAME ON!
-                    gameStartTime: Date.now(), 
-                    p2Ready: true, 
-                    p1Ready: true 
+                    p2: user.uid, p2Name: user.email.split('@')[0], 
+                    status: 'active', gameStartTime: Date.now(), 
+                    p2Ready: true, p1Ready: true 
                 });
                 searchingMatchId = doc.id;
             } else {
-                // CREATE NEW ROOM (Wait for opponent)
                 const newDocRef = matchesRef.doc();
                 transaction.set(newDocRef, { 
                     type: tid, fee: fee, prize: win, 
@@ -447,7 +499,6 @@
                 searchingMatchId = newDocRef.id;
             }
         });
-
         if(searchingMatchId) { waitForOpponent(searchingMatchId); }
     }
 
@@ -455,12 +506,7 @@
         const unsub = db.collection('matches').doc(mid).onSnapshot(doc => {
             if(!doc.exists) return;
             const data = doc.data();
-            // If someone joined (Status became active), Start Game immediately!
-            if(data.status === 'active') { 
-                clearInterval(searchInterval); // Stop Bot Timer
-                enterGame(mid); 
-                unsub(); 
-            }
+            if(data.status === 'active') { clearInterval(searchInterval); enterGame(mid); unsub(); }
         });
     }
 
@@ -471,8 +517,6 @@
                 const docRef = db.collection('matches').doc(searchingMatchId);
                 const doc = await transaction.get(docRef);
                 if(!doc.exists) return;
-                
-                // CRITICAL CHECK: Is P2 still empty?
                 const data = doc.data();
                 if(!data.p2) { 
                     const randomNames = ["Rahim_Pro", "King_Ludo", "Sultana_BD", "Tiger_75"];
@@ -488,12 +532,11 @@
 
     function cancelSearch() { clearInterval(searchInterval); if(searchingMatchId) db.collection('matches').doc(searchingMatchId).delete(); backToHome(); }
 
-    // --- GAME ENGINE (OPTIMISTIC UI ADDED) ---
     let isRolling = false; let botProcessing = false; 
 
     function enterGame(mid) {
         clearInterval(searchInterval);
-        currentMatch = mid; showScreen('ludo-game'); resizeBoard();
+        currentMatch = mid; showScreen('ludo-game'); 
         
         db.collection('matches').doc(mid).onSnapshot(d => {
             if(!d.exists) { 
@@ -501,23 +544,35 @@
                 return; 
             }
             const g = d.data();
-            window.gameState = g; // Store locally for optimistic UI
+            window.gameState = g; 
             document.getElementById('g-prize').innerText = g.prize;
             renderTokens(g.p1Pos, g.p2Pos);
             
             if(g.turn === 'blue' && !g.diceRolled) isRolling = false;
 
             const amP1 = (user.uid === g.p1);
+            isRotated = !amP1; 
+            resizeBoard(); 
+
+            const pBlue = document.getElementById('panel-blue');
+            const pGreen = document.getElementById('panel-green');
+            const txtBlue = document.getElementById('txt-blue');
+            const txtGreen = document.getElementById('txt-green');
+
             if(amP1) {
-                document.getElementById('panel-blue').style.pointerEvents = 'all';
-                document.getElementById('panel-green').style.pointerEvents = 'none';
-                document.getElementById('panel-green').style.opacity = '0.3';
-                document.getElementById('panel-blue').style.opacity = g.turn === 'blue' ? '1' : '0.5';
+                pBlue.className = "dice-panel panel-bottom";
+                pGreen.className = "dice-panel panel-top";
+                txtBlue.innerText = "YOU (Blue)";
+                txtGreen.innerText = "OPP (Green)";
+                pBlue.style.pointerEvents = 'all'; pBlue.style.opacity = g.turn==='blue'?'1':'0.5';
+                pGreen.style.pointerEvents = 'none'; pGreen.style.opacity = '0.5';
             } else {
-                document.getElementById('panel-blue').style.pointerEvents = 'none';
-                document.getElementById('panel-green').style.pointerEvents = 'all';
-                document.getElementById('panel-blue').style.opacity = '0.3';
-                document.getElementById('panel-green').style.opacity = g.turn === 'green' ? '1' : '0.5';
+                pGreen.className = "dice-panel panel-bottom";
+                pBlue.className = "dice-panel panel-top";
+                txtGreen.innerText = "YOU (Green)";
+                txtBlue.innerText = "OPP (Blue)";
+                pGreen.style.pointerEvents = 'all'; pGreen.style.opacity = g.turn==='green'?'1':'0.5';
+                pBlue.style.pointerEvents = 'none'; pBlue.style.opacity = '0.5';
             }
 
             if(g.p2 === 'bot_system_ai' && g.turn === 'green' && !g.diceRolled && !botProcessing) {
@@ -584,14 +639,13 @@
                 const el = document.getElementById(`t-${color}-${i}`);
                 if(el && ((pos===-1 && roll===6) || (pos!==-1 && pos+roll<=56))) { el.classList.add('movable'); canMove = true; }
             });
-            
             if(!canMove) {
                 setTimeout(() => {
                     db.collection('matches').doc(currentMatch).update({ turn: color === 'blue' ? 'green' : 'blue', diceRolled: false });
                     isRolling = false; 
                 }, 1000);
             } else {
-                isRolling = false; // UNLOCK FOR CLICKING
+                isRolling = false; 
             }
         });
     }
@@ -600,12 +654,11 @@
         const el = document.getElementById(`t-${color}-${idx}`);
         if(!el || !el.classList.contains('movable') || isRolling) return;
         
-        // 1. OPTIMISTIC UPDATE (INSTANT MOVE)
         soundMove.play().catch(e=>{}); 
         el.classList.remove('movable');
         isRolling = true; 
 
-        const g = window.gameState; // Use local state
+        const g = window.gameState;
         const roll = g.lastRoll;
         let newPos = (currentPos === -1) ? 0 : currentPos + roll;
         const colorPath = (color === 'blue') ? pathMap.blue : pathMap.green;
@@ -614,10 +667,10 @@
         
         if(targetCell) {
             targetCell.appendChild(el); 
-            el.style.transform = "translate(-50%, -60%)"; // Reset stack pos temporarily
+            if(isRotated) el.style.transform = "translate(-50%, -60%) rotate(180deg)";
+            else el.style.transform = "translate(-50%, -60%)";
         }
 
-        // 2. SERVER SYNC
         db.runTransaction(async t => {
             const ref = db.collection('matches').doc(currentMatch);
             const doc = await t.get(ref);
@@ -694,6 +747,7 @@
             const p = document.getElementById(parentId);
             if(p) { 
                 p.appendChild(div); div.onclick = () => handleTokenClick(color, i, pos);
+                if(isRotated) div.style.transform = "translate(-50%, -60%) rotate(180deg)";
                 if(pos !== -1 && pos !== 56) { if(!cellOccupancy[parentId]) cellOccupancy[parentId] = []; cellOccupancy[parentId].push(div); }
             }
         };
@@ -713,8 +767,11 @@
 
     function resizeBoard() {
         const b = document.getElementById('game-area');
-        const scale = Math.min(window.innerWidth / 760, window.innerHeight / 760) * 0.95;
-        if(b) b.style.transform = `scale(${scale})`;
+        // Subtract 250px! This gives PLENTY of room for Top Ad (50px) + Header (60px) + Bottom Ad (50px) + Margins
+        const availableHeight = window.innerHeight - 250; 
+        const scale = Math.min(window.innerWidth / 760, availableHeight / 760) * 0.95;
+        if(isRotated) b.style.transform = `scale(${scale}) rotate(180deg)`;
+        else b.style.transform = `scale(${scale})`;
     }
     window.addEventListener('resize', resizeBoard);
     function showScreen(id) { 
